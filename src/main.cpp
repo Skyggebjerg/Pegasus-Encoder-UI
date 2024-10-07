@@ -14,24 +14,22 @@ M5Canvas canvas(&display);
 Unit_Encoder sensor;
 
 void setup() {
-    Serial.begin(115200);
+    //Serial.begin(115200);
     Wire.begin(2,1);
     auto cfg = M5.config();
     AtomS3.begin(cfg);
-
     sensor.begin();
-    AtomS3.Display.setTextColor(GREEN);
+    AtomS3.Display.setTextColor(WHITE);
     AtomS3.Display.setTextSize(2);
-    AtomS3.Display.drawString("PaHUB Example", AtomS3.Display.width() / 2, AtomS3.Display.height() / 2);
-
+    //AtomS3.Display.drawString("Encoder example", AtomS3.Display.width() / 2, AtomS3.Display.height() / 2);
 }
 
 signed short int last_value = 0;
 
 void loop() {
     signed short int encoder_value = sensor.getEncoderValue();
-    bool btn_stauts                = sensor.getButtonStatus();
-    Serial.println(encoder_value);
+    bool btn_status                = sensor.getButtonStatus();
+    //Serial.println(encoder_value);
     if (last_value != encoder_value) {
         if (last_value > encoder_value) {
             sensor.setLEDColor(1, 0x000011);
@@ -42,13 +40,14 @@ void loop() {
     } else {
         sensor.setLEDColor(0, 0x001100);
     }
-    if (!btn_stauts) {
+    if (!btn_status) {
         sensor.setLEDColor(0, 0xC800FF);
     }
     
     AtomS3.Display.clear();
-    AtomS3.Display.drawString("C: ", 5, 5);
-    AtomS3.Display.drawString(String(btn_stauts), 40, 5);
+    //AtomS3.Display.drawString("C: ", 5, 5);
+    AtomS3.Display.drawString(String(btn_status), 40, 5);
+    //AtomS3.Display.drawString("       ", 40, 20);
     AtomS3.Display.drawString(String(encoder_value), 40, 20);
 
     delay(20);
